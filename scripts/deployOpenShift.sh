@@ -127,7 +127,16 @@ fi
 # Setting the default openshift_cloudprovider_kind if Azure enabled
 if [[ $AZURE == "true" ]]
 then
-	export CLOUDKIND="openshift_cloudprovider_kind=azure
+	export CLOUDKIND="#Start Cloud provider Azure
+openshift_cloudprovider_kind=azure
+openshift_cloudprovider_azure_client_id=$AADCLIENTID
+openshift_cloudprovider_azure_client_secret=$AADCLIENTSECRET
+openshift_cloudprovider_azure_tenant_id=$TENANTID
+openshift_cloudprovider_azure_subscription_id=$SUBSCRIPTIONID
+openshift_cloudprovider_azure_resource_group=openshift-okd-sepp3
+openshift_cloudprovider_azure_location=westeurope
+# End Cloud provider Azure
+
 osm_controller_args={'cloud-provider': ['azure'], 'cloud-config': ['/etc/origin/cloudprovider/azure.conf']}
 osm_api_server_args={'cloud-provider': ['azure'], 'cloud-config': ['/etc/origin/cloudprovider/azure.conf']}
 openshift_node_kubelet_args={'cloud-provider': ['azure'], 'cloud-config': ['/etc/origin/cloudprovider/azure.conf'], 'enable-controller-attach-detach': ['true']}"
