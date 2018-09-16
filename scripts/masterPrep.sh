@@ -6,6 +6,11 @@ STORAGEACCOUNT=$1
 SUDOUSER=$2
 LOCATION=$3
 
+echo $1 >> ~/masterPrepVars.txt
+echo $2 >> ~/masterPrepVars.txt
+echo $3 >> ~/masterPrepVars.txt
+
+
 # Install EPEL repository
 echo $(date) " - Installing EPEL"
 
