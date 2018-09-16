@@ -168,7 +168,7 @@ openshift_override_hostname_check=true
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 openshift_master_api_port=443
 openshift_master_console_port=443
-osm_default_node_selector='region=app'
+osm_default_node_selector='node-role.kubernetes.io/compute=true'
 openshift_disable_check=disk_availability,memory_availability,docker_image_availability
 $CLOUDKIND
 
