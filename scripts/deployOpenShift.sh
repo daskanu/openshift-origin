@@ -171,7 +171,10 @@ openshift_master_api_port=443
 openshift_master_console_port=443
 osm_default_node_selector='node-role.kubernetes.io/compute=true'
 openshift_disable_check=disk_availability,memory_availability,docker_image_availability
+
 $CLOUDKIND
+
+openshift_storageclass_parameters={'kind': 'managed', 'storageaccounttype': 'Premium_LRS'}
 
 # default selectors for router and registry services
 openshift_router_selector='node-role.kubernetes.io/infra=true'
