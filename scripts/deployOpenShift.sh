@@ -184,7 +184,7 @@ openshift_master_cluster_public_vip=$MASTERPUBLICIPADDRESS
 # Enable HTPasswdPasswordIdentityProvider
 openshift_master_identity_providers=[{'name': 'htpasswd_auth', 'login': 'true', 'challenge': 'true', 'kind': 'HTPasswdPasswordIdentityProvider'}]
 
-# Disable service catalog - Install after cluster is up if Azure Cloud Provider is enabled
+# Enable service catalog - Install after cluster is up if Azure Cloud Provider is enabled
 openshift_enable_service_catalog=true
 
 # Disable the OpenShift SDN plugin
