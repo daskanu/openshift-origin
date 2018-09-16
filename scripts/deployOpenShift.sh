@@ -207,7 +207,7 @@ openshift_enable_service_catalog=true
 # openshift_use_openshift_sdn=true
 
 # Setup metrics
-openshift_metrics_install_metrics=true
+openshift_metrics_install_metrics=false
 #openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
