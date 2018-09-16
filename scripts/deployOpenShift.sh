@@ -168,13 +168,13 @@ openshift_override_hostname_check=true
 os_sdn_network_plugin_name='redhat/openshift-ovs-multitenant'
 openshift_master_api_port=443
 openshift_master_console_port=443
-osm_default_node_selector='node-role.kubernetes.io/compute=true'
+osm_default_node_selector={"node-role.kubernetes.io/compute": "true"}
 openshift_disable_check=disk_availability,memory_availability,docker_image_availability
 $CLOUDKIND
 
 # default selectors for router and registry services
-openshift_router_selector='node-role.kubernetes.io/infra=true'
-openshift_registry_selector='node-role.kubernetes.io/infra=true'
+openshift_router_selector={"node-role.kubernetes.io/infra": "true"}
+openshift_registry_selector={"node-role.kubernetes.io/infra": "true"}
 
 $HAMODE
 openshift_master_cluster_hostname=$MASTERPUBLICIPHOSTNAME
@@ -195,9 +195,9 @@ openshift_metrics_install_metrics=false
 #openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
-openshift_metrics_hawkular_nodeselector={"region":"infra"}
-openshift_metrics_cassandra_nodeselector={"region":"infra"}
-openshift_metrics_heapster_nodeselector={"region":"infra"}
+openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
 # openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
 
 # Setup logging
@@ -205,9 +205,9 @@ openshift_logging_install_logging=false
 # openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
-openshift_logging_es_nodeselector={"region":"infra"}
-openshift_logging_kibana_nodeselector={"region":"infra"}
-openshift_logging_curator_nodeselector={"region":"infra"}
+openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_master_logging_public_url=https://kibana.$ROUTING
 openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:443
 
