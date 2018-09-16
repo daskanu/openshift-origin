@@ -195,18 +195,18 @@ openshift_enable_service_catalog=true
 # openshift_use_openshift_sdn=true
 
 # Setup metrics
-openshift_metrics_install_metrics=false
+openshift_metrics_install_metrics=true
 #openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
 openshift_metrics_hawkular_nodeselector='node-role.kubernetes.io/infra=true'
 openshift_metrics_cassandra_nodeselector='node-role.kubernetes.io/infra=true'
 openshift_metrics_heapster_nodeselector='node-role.kubernetes.io/infra=true'
-# openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
+openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
 
 # Setup logging
-openshift_logging_install_logging=false
-# openshift_logging_es_pvc_dynamic=true
+openshift_logging_install_logging=true
+openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
 openshift_logging_es_nodeselector='node-role.kubernetes.io/infra=true'
@@ -342,6 +342,7 @@ then
 	runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-service-catalog/config.yml"
 	echo $(date) "- Service Catalog, Ansible Service Broker and Template Service Broker installed successfully"
 	
+	echo "End installation" > ~/end-installation.txt
 fi
 
 # Configure Metrics
@@ -365,6 +366,8 @@ then
 	   echo $(date) "- Metrics configuration failed"
 	   exit 11
 	fi
+	
+	echo "End metrics" > ~/end-metrics.txt
 fi
 
 # Configure Logging
@@ -386,6 +389,8 @@ then
 	   echo $(date) "- Logging configuration failed"
 	   exit 12
 	fi
+	
+	echo "End logging" > ~/end-logging.txt
 fi
 
 # Delete yaml files
