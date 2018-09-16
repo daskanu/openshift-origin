@@ -2,6 +2,9 @@
 
 echo $(date) " - Starting Script"
 
+echo "Node" >> ~/NodePrepVars.txt
+
+
 # Install EPEL repository
 echo $(date) " - Installing EPEL"
 
