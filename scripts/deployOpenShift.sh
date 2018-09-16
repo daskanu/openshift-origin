@@ -207,13 +207,13 @@ openshift_enable_service_catalog=true
 # openshift_use_openshift_sdn=true
 
 # Setup metrics
-openshift_metrics_install_metrics=false
-#openshift_metrics_cassandra_storage_type=dynamic
+openshift_metrics_install_metrics=true
+openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
-openshift_metrics_hawkular_nodeselector='node-role.kubernetes.io/infra=true'
-openshift_metrics_cassandra_nodeselector='node-role.kubernetes.io/infra=true'
-openshift_metrics_heapster_nodeselector='node-role.kubernetes.io/infra=true'
+openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
 
 # Setup logging
@@ -221,9 +221,9 @@ openshift_logging_install_logging=true
 openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
-openshift_logging_es_nodeselector='node-role.kubernetes.io/infra=true'
-openshift_logging_kibana_nodeselector='node-role.kubernetes.io/infra=true'
-openshift_logging_curator_nodeselector='node-role.kubernetes.io/infra=true'
+openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_master_logging_public_url=https://kibana.$ROUTING
 openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:443
 
