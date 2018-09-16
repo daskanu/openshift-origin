@@ -29,6 +29,12 @@ export LOGGING=${22}
 export AZURE=${23}
 export STORAGEKIND=${24}
 
+
+echo "Start" >> ~/deployOpenshift.txt
+
+
+
+
 # Determine if Commercial Azure or Azure Government
 CLOUD=$( curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-04-02&format=text" | cut -c 1-2 )
 export CLOUD=${CLOUD^^}
@@ -80,6 +86,12 @@ EOF
 echo $(date) " - Updating ansible.cfg file"
 
 ansible-playbook ./updateansiblecfg.yaml
+
+
+echo "#1" >> ~/deployOpenshift.txt
+
+
+
 
 # Create docker registry config based on Commercial Azure or Azure Government
 if [[ $CLOUD == "US" ]]
@@ -236,6 +248,13 @@ $nodegroup
 [new_nodes]
 EOF
 
+
+
+echo "#2" >> ~/deployOpenshift.txt
+
+
+
+
 echo $(date) " - Cloning openshift-ansible repo for use in installation"
 
 runuser -l $SUDOUSER -c "git clone -b release-3.10 https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
@@ -281,9 +300,26 @@ echo $(date) " - Prerequisites check complete"
 # Initiating installation of OpenShift Origin using Ansible Playbook
 echo $(date) " - Installing OpenShift Container Platform via Ansible Playbook"
 
+
+
+
+echo "#3 - Prep fin" >> ~/deployOpenshift.txt
+
+
+
+
+
 runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/deploy_cluster.yml"
 echo $(date) " - OpenShift Origin Cluster install complete"
 echo $(date) " - Running additional playbooks to finish configuring and installing other components"
+
+
+
+echo "#4 - Deploy fin" >> ~/deployOpenshift.txt
+
+
+
+
 
 echo $(date) " - Modifying sudoers"
 
@@ -292,6 +328,16 @@ sed -i -e '/Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSE
 
 echo $(date) "- Re-enabling requiretty"
 
+
+
+
+echo "#5 - Requiretty fin" >> ~/deployOpenshift.txt
+
+
+
+
+
+
 sed -i -e "s/# Defaults    requiretty/Defaults    requiretty/" /etc/sudoers
 
 # Adding user to OpenShift authentication file
@@ -299,15 +345,49 @@ echo $(date) "- Adding OpenShift user"
 
 runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/addocpuser.yaml"
 
+
+
+
+
+
+
+echo "#6" >> ~/deployOpenshift.txt
+
+
+
+
+
+
+
+
+
 # Assigning cluster admin rights to OpenShift user
 echo $(date) "- Assigning cluster admin rights to user"
 
 runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/assignclusteradminrights.yaml"
 
+
+
+
+echo "#7" >> ~/deployOpenshift.txt
+
+
+
+
 # Configure Docker Registry to use Azure Storage Account
 echo $(date) "- Configuring Docker Registry to use Azure Storage Account"
 
 runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/$DOCKERREGISTRYYAML"
+
+
+
+
+
+echo "#8" >> ~/deployOpenshift.txt
+
+
+
+
 
 if [[ $AZURE == "true" ]]
 then
@@ -321,6 +401,13 @@ then
 	runuser -l $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/reboot-master-origin.yaml"
 	runuser -l $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/reboot-nodes.yaml"
 
+
+
+echo "#9" >> ~/deployOpenshift.txt
+
+
+
+
 	if [ $? -eq 0 ]
 	then
 	   echo $(date) " - Cloud Provider setup of OpenShift Cluster completed successfully"
@@ -329,12 +416,32 @@ then
 	   exit 10
 	fi
 	
+	
+	
+	
+echo "#10" >> ~/deployOpenshift.txt	
+	
+	
+	
+	
+	
+	
 	# Create Storage Class
 	echo $(date) "- Creating Storage Class"
 
 	runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/configurestorageclass.yaml"
 	echo $(date) "- Sleep for 15"
 	sleep 15
+	
+	
+	
+	
+	
+echo "#11" >> ~/deployOpenshift.txt	
+	
+	
+	
+	
 	
 	# Installing Service Catalog, Ansible Service Broker and Template Service Broker
 	
@@ -343,12 +450,32 @@ then
 	echo $(date) "- Service Catalog, Ansible Service Broker and Template Service Broker installed successfully"
 	
 	echo "End installation" > ~/end-installation.txt
+	
+	
+	
+echo "#12" >> ~/deployOpenshift.txt	
+	
 fi
+
+
+
+
+echo "#13" >> ~/deployOpenshift.txt
+
+
+
 
 # Configure Metrics
 
 if [ $METRICS == "true" ]
 then
+
+
+echo "#14" >> ~/deployOpenshift.txt
+
+
+
+
 	sleep 30	
 	echo $(date) "- Determining Origin version from rpm"
 	OO_VERSION="v"$(rpm -q origin | cut -d'-' -f 2 | head -c 3)
@@ -359,6 +486,14 @@ then
 	else
 		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_image_version=$OO_VERSION"
 	fi
+	
+	
+	
+echo "#15" >> ~/deployOpenshift.txt	
+	
+	
+	
+	
 	if [ $? -eq 0 ]
 	then
 	   echo $(date) " - Metrics configuration completed successfully"
@@ -368,12 +503,27 @@ then
 	fi
 	
 	echo "End metrics" > ~/end-metrics.txt
+	
+	
+	
+	
+echo "#16" >> ~/deployOpenshift.txt	
+	
+	
 fi
 
 # Configure Logging
 
 if [ $LOGGING == "true" ] 
 then
+
+
+
+echo "#17" >> ~/deployOpenshift.txt
+
+
+
+
 	sleep 60
 	echo $(date) "- Deploying Logging"
 	if [ $AZURE == "true" ]
@@ -382,6 +532,13 @@ then
 	else
 		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True"
 	fi
+	
+	
+	
+echo "#18" >> ~/deployOpenshift.txt	
+	
+	
+	
 	if [ $? -eq 0 ]
 	then
 	   echo $(date) " - Logging configuration completed successfully"
@@ -393,6 +550,14 @@ then
 	echo "End logging" > ~/end-logging.txt
 fi
 
+
+
+
+echo "#19" >> ~/deployOpenshift.txt
+
+
+
+
 # Delete yaml files
 echo $(date) "- Deleting unecessary files"
 
@@ -403,3 +568,20 @@ echo $(date) "- Sleep for 30"
 sleep 30
 
 echo $(date) " - Script complete"
+
+
+
+
+
+
+echo "#20" >> ~/deployOpenshift.txt
+
+
+
+
+
+
+
+
+
+
