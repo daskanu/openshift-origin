@@ -173,8 +173,8 @@ openshift_disable_check=disk_availability,memory_availability,docker_image_avail
 $CLOUDKIND
 
 # default selectors for router and registry services
-openshift_router_selector='region=infra'
-openshift_registry_selector='region=infra'
+openshift_router_selector='node-role.kubernetes.io/infra=true'
+openshift_registry_selector='node-role.kubernetes.io/infra=true'
 
 $HAMODE
 openshift_master_cluster_hostname=$MASTERPUBLICIPHOSTNAME
