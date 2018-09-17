@@ -145,8 +145,8 @@ openshift_cloudprovider_azure_client_id=$AADCLIENTID
 openshift_cloudprovider_azure_client_secret=$AADCLIENTSECRET
 openshift_cloudprovider_azure_tenant_id=$TENANTID
 openshift_cloudprovider_azure_subscription_id=$SUBSCRIPTIONID
-openshift_cloudprovider_azure_resource_group=openshift-okd-sepp3
-openshift_cloudprovider_azure_location=westeurope
+openshift_cloudprovider_azure_resource_group=$RESOURCEGROUP
+openshift_cloudprovider_azure_location=$LOCATION
 # End Cloud provider Azure
 
 osm_controller_args={'cloud-provider': ['azure'], 'cloud-config': ['/etc/origin/cloudprovider/azure.conf']}
