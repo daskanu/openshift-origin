@@ -227,6 +227,7 @@ openshift_prometheus_storage_kind=azure-disk
 
 # Setup logging
 openshift_logging_install_logging=true
+openshift_logging_es_memory_limit=1G
 openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
