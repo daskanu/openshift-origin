@@ -206,8 +206,11 @@ openshift_enable_service_catalog=true
 # Disable the OpenShift SDN plugin
 # openshift_use_openshift_sdn=true
 
+# ---------------- Metrics start
 # Setup metrics
 openshift_metrics_install_metrics=true
+
+## Prometheus
 openshift_hosted_prometheus_deploy=true
 openshift_prometheus_namespace=openshift-metrics
 openshift_prometheus_node_selector={"node-role.kubernetes.io/infra": "true"}
@@ -215,28 +218,27 @@ openshift_prometheus_storage_type=pvc
 openshift_prometheus_alertmanager_pvc_name=alertmanager
 openshift_prometheus_alertbuffer_pvc_size=10G
 openshift_prometheus_pvc_access_modes=ReadWriteOnce
-openshift_prometheus_storage_kind=standard
-openshift_prometheus_alertmanager_storage_kind=standard
+openshift_prometheus_storage_kind=azure-disk
+
+# Hawkular
 openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10.0-rc.0
 openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
 openshift_metrics_schema_installer_image=alv91/origin-metrics-schema-installer:v3.10
 openshift_metrics_hawkular_metrics_image=openshift/origin-metrics-hawkular-metrics:v3.10.0-rc.0
-
-
-
-#openshift_metrics_cassandra_storage_type=dynamic
-#openshift_metrics_start_cluster=true
-#openshift_metrics_startup_timeout=120
-#openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
-#openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
-#openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
-#openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
+openshift_metrics_cassandra_storage_type=dynamic
+openshift_metrics_start_cluster=true
+openshift_metrics_startup_timeout=120
+openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
+openshift_metrics_hawkular_hostname=hawkular-metrics.$ROUTING/hawkular/metrics
+# --------------- Metrics end
 
 # Setup logging
 openshift_logging_install_logging=true
 openshift_logging_es_memory_limit=1Gi
 openshift_logging_es_pvc_dynamic=true
-openshift_logging_es_pvc_storage_class_name=standard
+openshift_logging_es_pvc_storage_class_name=azure-standard
 openshift_logging_fluentd_nodeselector={"logging":"true"}
 openshift_logging_es_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
@@ -248,9 +250,6 @@ openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.
 openshift_logging_curator_image=openshift/origin-logging-curator:v3.10
 openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.10
 openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.10
-
-
-
 
 # host group for masters
 [masters]
