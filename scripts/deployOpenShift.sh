@@ -208,13 +208,22 @@ openshift_enable_service_catalog=true
 
 # Setup metrics
 openshift_metrics_install_metrics=true
-openshift_metrics_cassandra_storage_type=dynamic
-openshift_metrics_start_cluster=true
-openshift_metrics_startup_timeout=120
-openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
+openshift_hosted_prometheus_deploy=true
+openshift_prometheus_namespace=openshift-metrics
+openshift_prometheus_node_selector={"node-role.kubernetes.io/infra": "true"}
+openshift_prometheus_storage_type: pvc
+openshift_prometheus_alertmanager_pvc_name: alertmanager
+openshift_prometheus_alertbuffer_pvc_size: 10G
+openshift_prometheus_pvc_access_modes: [ReadWriteOnce]
+openshift_prometheus_storage_kind=azure-disk 
+
+#openshift_metrics_cassandra_storage_type=dynamic
+#openshift_metrics_start_cluster=true
+#openshift_metrics_startup_timeout=120
+#openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
+#openshift_metrics_hawkular_hostname=https://hawkular-metrics.$ROUTING/hawkular/metrics
 
 # Setup logging
 openshift_logging_install_logging=true
