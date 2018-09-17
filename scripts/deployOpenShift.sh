@@ -231,7 +231,7 @@ openshift_metrics_startup_timeout=120
 openshift_metrics_hawkular_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_cassandra_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_metrics_heapster_nodeselector={"node-role.kubernetes.io/infra": "true"}
-openshift_metrics_hawkular_hostname=hawkular-metrics.$ROUTING/hawkular/metrics
+openshift_metrics_hawkular_hostname=hawkular-metrics.$ROUTING 
 # --------------- Metrics end
 
 # Setup logging
