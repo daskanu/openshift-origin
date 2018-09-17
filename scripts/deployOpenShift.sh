@@ -216,7 +216,7 @@ openshift_prometheus_alertmanager_pvc_name=alertmanager
 openshift_prometheus_alertbuffer_pvc_size=10G
 openshift_prometheus_pvc_access_modes=ReadWriteOnce
 openshift_prometheus_storage_kind=azure-disk 
-openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10
+openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10-rc.0
 openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
 openshift_metrics_schema_installer_image=openshift/origin-metrics-schema-installer:v3.10
 
