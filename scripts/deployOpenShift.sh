@@ -219,7 +219,7 @@ openshift_prometheus_storage_kind=azure-disk
 openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10.0-rc.0
 openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
 openshift_metrics_schema_installer_image=alv91/origin-metrics-schema-installer:v3.10
-
+openshift_metrics_hawkular_metrics_image=openshift/origin-metrics-hawkular-metrics:v3.10.0-rc.0
 
 
 
