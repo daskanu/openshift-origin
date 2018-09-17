@@ -193,6 +193,7 @@ openshift_metrics_heapster_nodeselector={"region":"infra"}
 
 # Setup logging
 openshift_logging_install_logging=false
+openshift_logging_es_memory_limit=2G
 # openshift_logging_es_pvc_dynamic=true
 openshift_logging_es_pvc_storage_class_name=generic
 openshift_logging_fluentd_nodeselector={"logging":"true"}
