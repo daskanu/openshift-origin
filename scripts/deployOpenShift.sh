@@ -216,6 +216,12 @@ openshift_prometheus_alertmanager_pvc_name=alertmanager
 openshift_prometheus_alertbuffer_pvc_size=10G
 openshift_prometheus_pvc_access_modes=ReadWriteOnce
 openshift_prometheus_storage_kind=azure-disk 
+openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10
+openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
+openshift_metrics_schema_installer_image=openshift/origin-metrics-schema-installer:v3.10
+
+
+
 
 #openshift_metrics_cassandra_storage_type=dynamic
 #openshift_metrics_start_cluster=true
@@ -236,6 +242,14 @@ openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_master_logging_public_url=https://kibana.$ROUTING
 openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:443
+openshift_logging_fluentd_image=openshift/origin-logging-fluentd:v3.10
+openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.10
+openshift_logging_curator_image=openshift/origin-logging-curator:v3.10
+openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.10
+openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.10
+
+
+
 
 # host group for masters
 [masters]
