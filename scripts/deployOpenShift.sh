@@ -211,10 +211,10 @@ openshift_metrics_install_metrics=true
 openshift_hosted_prometheus_deploy=true
 openshift_prometheus_namespace=openshift-metrics
 openshift_prometheus_node_selector={"node-role.kubernetes.io/infra": "true"}
-openshift_prometheus_storage_type: pvc
-openshift_prometheus_alertmanager_pvc_name: alertmanager
-openshift_prometheus_alertbuffer_pvc_size: 10G
-openshift_prometheus_pvc_access_modes: [ReadWriteOnce]
+openshift_prometheus_storage_type=pvc
+openshift_prometheus_alertmanager_pvc_name=alertmanager
+openshift_prometheus_alertbuffer_pvc_size=10G
+openshift_prometheus_pvc_access_modes=[ReadWriteOnce]
 openshift_prometheus_storage_kind=azure-disk 
 
 #openshift_metrics_cassandra_storage_type=dynamic
