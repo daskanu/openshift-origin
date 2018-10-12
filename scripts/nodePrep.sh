@@ -11,6 +11,8 @@ echo $(date) " - Installing EPEL"
 yum -y install https://dl.fedoraproject.org/pub/epel/epel-release-latest-7.noarch.rpm
 sed -i -e "s/^enabled=1/enabled=0/" /etc/yum.repos.d/epel.repo
 
+curl https://rpms.svc.ci.openshift.org/openshift-origin-v3.11.repo > /etc/yum.repos.d/openshift-origin-v3.11.repo
+
 echo $(date) " - EPEL successfully installed"
 
 # Update system to latest packages and install dependencies
