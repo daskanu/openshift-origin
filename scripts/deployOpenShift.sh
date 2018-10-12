@@ -29,11 +29,7 @@ export LOGGING=${22}
 export AZURE=${23}
 export STORAGEKIND=${24}
 
-
-echo "Start" >> ~/deployOpenshift.txt
-
 echo "deployOpenShift.sh \"$1\" '$PASSWORD' \"$3\" \"$4\" \"$5\" \"$6\" \"$7\" \"$8\" \"$9\" \"${10}\" \"${11}\" \"${12}\" \"${13}\" '$ACCOUNTKEY' '${15}' '${16}' '${17}' '$AADCLIENTSECRET' '${19}' '${20}' '${21}' '${22}' '${23}' '${24}'" >> ~/deployOpenshift.sh
-
 
 # Determine if Commercial Azure or Azure Government
 CLOUD=$( curl -H Metadata:true "http://169.254.169.254/metadata/instance/compute/location?api-version=2017-04-02&format=text" | cut -c 1-2 )
@@ -86,12 +82,6 @@ EOF
 echo $(date) " - Updating ansible.cfg file"
 
 ansible-playbook ./updateansiblecfg.yaml
-
-
-echo "#1" >> ~/deployOpenshift.txt
-
-
-
 
 # Create docker registry config based on Commercial Azure or Azure Government
 if [[ $CLOUD == "US" ]]
@@ -172,7 +162,7 @@ ansible_ssh_user=$SUDOUSER
 ansible_become=yes
 openshift_install_examples=true
 openshift_deployment_type=origin
-openshift_release=v3.10
+openshift_release=v3.11
 docker_udev_workaround=True
 openshift_use_dnsmasq=True
 openshift_master_default_subdomain=$ROUTING
@@ -221,10 +211,10 @@ openshift_prometheus_pvc_access_modes=ReadWriteOnce
 openshift_prometheus_storage_kind=azure-disk
 
 # Hawkular
-openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10.0-rc.0
-openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
-openshift_metrics_schema_installer_image=alv91/origin-metrics-schema-installer:v3.10
-openshift_metrics_hawkular_metrics_image=openshift/origin-metrics-hawkular-metrics:v3.10.0-rc.0
+#openshift_metrics_heapster_image=openshift/origin-metrics-heapster:v3.10.0-rc.0
+#openshift_metrics_cassandra_image=openshift/origin-metrics-cassandra:v3.10.0-rc.0
+#openshift_metrics_schema_installer_image=alv91/origin-metrics-schema-installer:v3.10
+#openshift_metrics_hawkular_metrics_image=openshift/origin-metrics-hawkular-metrics:v3.10.0-rc.0
 openshift_metrics_cassandra_storage_type=dynamic
 openshift_metrics_start_cluster=true
 openshift_metrics_startup_timeout=120
@@ -245,11 +235,16 @@ openshift_logging_kibana_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_master_logging_public_url=https://kibana.$ROUTING
 openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:443
-openshift_logging_fluentd_image=openshift/origin-logging-fluentd:v3.10
-openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.10
-openshift_logging_curator_image=openshift/origin-logging-curator:v3.10
-openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.10
-openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.10
+#openshift_logging_fluentd_image=openshift/origin-logging-fluentd:v3.10
+#openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.10
+#openshift_logging_curator_image=openshift/origin-logging-curator:v3.10
+#openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.10
+#openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.10
+
+
+openshift_console_install=true
+openshift_enable_olm=true
+
 
 # host group for masters
 [masters]
@@ -273,15 +268,9 @@ $nodegroup
 EOF
 
 
-
-echo "#2" >> ~/deployOpenshift.txt
-
-
-
-
 echo $(date) " - Cloning openshift-ansible repo for use in installation"
 
-runuser -l $SUDOUSER -c "git clone -b release-3.10 https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
+runuser -l $SUDOUSER -c "git clone -b release-3.11 https://github.com/openshift/openshift-ansible /home/$SUDOUSER/openshift-ansible"
 chmod -R 777 /home/$SUDOUSER/openshift-ansible
 
 # Run a loop playbook to ensure DNS Hostname resolution is working prior to continuing with script
@@ -325,23 +314,9 @@ echo $(date) " - Prerequisites check complete"
 echo $(date) " - Installing OpenShift Container Platform via Ansible Playbook"
 
 
-
-
-echo "#3 - Prep fin" >> ~/deployOpenshift.txt
-
-
-
-
-
 runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/deploy_cluster.yml"
 echo $(date) " - OpenShift Origin Cluster install complete"
 echo $(date) " - Running additional playbooks to finish configuring and installing other components"
-
-
-
-echo "#4 - Deploy fin" >> ~/deployOpenshift.txt
-
-
 
 
 
@@ -351,13 +326,6 @@ sed -i -e "s/Defaults    requiretty/# Defaults    requiretty/" /etc/sudoers
 sed -i -e '/Defaults    env_keep += "LC_TIME LC_ALL LANGUAGE LINGUAS _XKB_CHARSET XAUTHORITY"/aDefaults    env_keep += "PATH"' /etc/sudoers
 
 echo $(date) "- Re-enabling requiretty"
-
-
-
-
-echo "#5 - Requiretty fin" >> ~/deployOpenshift.txt
-
-
 
 
 
@@ -372,28 +340,10 @@ runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-play
 
 
 
-
-
-
-echo "#6" >> ~/deployOpenshift.txt
-
-
-
-
-
-
-
-
-
 # Assigning cluster admin rights to OpenShift user
 echo $(date) "- Assigning cluster admin rights to user"
 
 runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/assignclusteradminrights.yaml"
-
-
-
-
-echo "#7" >> ~/deployOpenshift.txt
 
 
 
@@ -406,30 +356,16 @@ runuser $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-play
 
 
 
-
-echo "#8" >> ~/deployOpenshift.txt
-
-
-
-
-
 if [[ $AZURE == "true" ]]
 then
 	echo $(date) " - Rebooting cluster to complete installation"
 	runuser -l $SUDOUSER -c  "oc label --overwrite nodes $MASTER-0 openshift-infra=apiserver"
 	runuser -l $SUDOUSER -c  "oc label --overwrite nodes --all logging-infra-fluentd=true logging=true"
-	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m service -a 'name=openvswitch state=restarted'"
-	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m service -a 'name=origin-master-api state=restarted'"
-	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m service -a 'name=origin-master-controllers state=restarted'"
+	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m command -a '/usr/local/bin/master-restart api'"
+	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m command -a '/usr/local/bin/master-restart controllers'"
 	runuser -l $SUDOUSER -c  "ansible localhost -b -o -m service -a 'name=origin-node state=restarted'"
 	runuser -l $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/reboot-master-origin.yaml"
 	runuser -l $SUDOUSER -c "ansible-playbook -f 10 ~/openshift-container-platform-playbooks/reboot-nodes.yaml"
-
-
-
-echo "#9" >> ~/deployOpenshift.txt
-
-
 
 
 	if [ $? -eq 0 ]
@@ -441,15 +377,6 @@ echo "#9" >> ~/deployOpenshift.txt
 	fi
 	
 	
-	
-	
-echo "#10" >> ~/deployOpenshift.txt	
-	
-	
-	
-	
-	
-	
 	# Create Storage Class
 	echo $(date) "- Creating Storage Class"
 
@@ -459,13 +386,7 @@ echo "#10" >> ~/deployOpenshift.txt
 	
 	
 	
-	
-	
-echo "#11" >> ~/deployOpenshift.txt	
-	
-	
-	
-	
+
 	
 	# Installing Service Catalog, Ansible Service Broker and Template Service Broker
 	
@@ -476,15 +397,8 @@ echo "#11" >> ~/deployOpenshift.txt
 	echo "End installation" > ~/end-installation.txt
 	
 	
-	
-echo "#12" >> ~/deployOpenshift.txt	
-	
 fi
 
-
-
-
-echo "#13" >> ~/deployOpenshift.txt
 
 
 
@@ -493,11 +407,6 @@ echo "#13" >> ~/deployOpenshift.txt
 
 if [ $METRICS == "true" ]
 then
-
-
-echo "#14" >> ~/deployOpenshift.txt
-
-
 
 
 	sleep 30	
@@ -510,10 +419,6 @@ echo "#14" >> ~/deployOpenshift.txt
 	else
 		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-metrics/config.yml -e openshift_metrics_install_metrics=True -e openshift_metrics_image_version=$OO_VERSION"
 	fi
-	
-	
-	
-echo "#15" >> ~/deployOpenshift.txt	
 	
 	
 	
@@ -530,22 +435,12 @@ echo "#15" >> ~/deployOpenshift.txt
 	
 	
 	
-	
-echo "#16" >> ~/deployOpenshift.txt	
-	
-	
 fi
 
 # Configure Logging
 
 if [ $LOGGING == "true" ] 
 then
-
-
-
-echo "#17" >> ~/deployOpenshift.txt
-
-
 
 
 	sleep 60
@@ -556,10 +451,6 @@ echo "#17" >> ~/deployOpenshift.txt
 	else
 		runuser -l $SUDOUSER -c "ansible-playbook -f 10 /home/$SUDOUSER/openshift-ansible/playbooks/openshift-logging/config.yml -e openshift_logging_install_logging=True"
 	fi
-	
-	
-	
-echo "#18" >> ~/deployOpenshift.txt	
 	
 	
 	
@@ -577,11 +468,6 @@ fi
 
 
 
-echo "#19" >> ~/deployOpenshift.txt
-
-
-
-
 # Delete yaml files
 echo $(date) "- Deleting unecessary files"
 
@@ -594,11 +480,6 @@ sleep 30
 echo $(date) " - Script complete"
 
 
-
-
-
-
-echo "#20" >> ~/deployOpenshift.txt
 
 
 
