@@ -39,9 +39,9 @@ then
     echo $(date) " - Installing Ansible, pyOpenSSL and python-passlib"
     yum -y --enablerepo=epel install pyOpenSSL python-passlib
 
-    # Install Ansible 2.6.5. Openshift 3.11 cant be installed with Ansible 2.7 !!!
-    yum -y --enablerepo=epel install python-pip
-    pip install ansible==2.6.5
+    # TEMPORARY???: Install Ansible 2.6.5. Openshift 3.11 cant be installed with Ansible 2.7 !!!
+    wget https://releases.ansible.com/ansible/rpm/release/epel-7-x86_64/ansible-2.6.5-1.el7.ans.noarch.rpm
+    yum -y localinstall ansible-2.6.5-1.el7.ans.noarch.rpm
 fi
 
 # Install java to support metrics
