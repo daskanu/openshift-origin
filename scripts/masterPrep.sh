@@ -37,7 +37,11 @@ echo $(date) " - System updates successfully installed"
 if hostname -f|grep -- "-0" >/dev/null
 then
     echo $(date) " - Installing Ansible, pyOpenSSL and python-passlib"
-    yum -y --enablerepo=epel install ansible pyOpenSSL python-passlib
+    yum -y --enablerepo=epel install pyOpenSSL python-passlib
+
+    # Install Ansible 2.6.5. Openshift 3.11 cant be installed with Ansible 2.7 !!!
+    yum -y --enablerepo=epel install python-pip
+    pip install ansible==2.6.5
 fi
 
 # Install java to support metrics
