@@ -236,9 +236,9 @@ openshift_logging_curator_nodeselector={"node-role.kubernetes.io/infra": "true"}
 openshift_master_logging_public_url=https://kibana.$ROUTING
 openshift_logging_master_public_url=https://$MASTERPUBLICIPHOSTNAME:443
 #openshift_logging_fluentd_image=openshift/origin-logging-fluentd:v3.10
-openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch:v3.11
-openshift_logging_curator_image=openshift/origin-logging-curator:v3.11
-#openshift_logging_kibana_image=openshift/origin-logging-kibana:v3.10
+openshift_logging_elasticsearch_image=openshift/origin-logging-elasticsearch5:v4.0
+openshift_logging_curator_image=openshift/origin-logging-curator5:v4.0
+openshift_logging_kibana_image=openshift/origin-logging-kibana5:v4.0
 #openshift_logging_kibana_proxy_image=openshift/origin-logging-auth-proxy:v3.10
 
 
