@@ -197,7 +197,7 @@ openshift_enable_service_catalog=true
 # openshift_use_openshift_sdn=true
 
 ## Monitoring
-openshift_cluster_monitoring_operator_instally=true
+openshift_cluster_monitoring_operator_install=true
 
 # Setup logging
 openshift_logging_install_logging=true
